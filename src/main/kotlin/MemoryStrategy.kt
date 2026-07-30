@@ -43,17 +43,3 @@ class ReadOnlyROMStrategy(romBytes: ByteArray) : MemoryStrategy {
         )
     }
 }
-
-class MemoryBus(val ram: MemoryStrategy, var rom: MemoryStrategy) {
-    fun read(address: Int, mFlag: Int): Int {
-        return if (mFlag == 1) rom.read(address) else ram.read(address)
-    }
-
-    fun write(address: Int, value: Int, mFlag: Int) {
-        if (mFlag == 1) {
-            rom.write(address, value)
-        } else {
-            ram.write(address, value)
-        }
-    }
-}
