@@ -199,10 +199,10 @@ class ConvertToBase10Instruction : Instruction() {
         val tens = ((val10 % 100) / 10)
         val ones = (val10 % 10)
 
-        // Ensure write operations target RAM (mFlag = 0)
-        bus.ram.write(cpu.address, hundreds)
-        bus.ram.write(cpu.address + 1, tens)
-        bus.ram.write(cpu.address + 2, ones)
+        // Standard bus writes based on current mFlag state
+        bus.write(cpu.address, hundreds, cpu.mFlag)
+        bus.write(cpu.address + 1, tens, cpu.mFlag)
+        bus.write(cpu.address + 2, ones, cpu.mFlag)
         return true
     }
 }

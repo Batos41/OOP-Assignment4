@@ -33,8 +33,6 @@ class D5700Emulator : Runnable {
         memoryBus = MemoryBus(ram, rom)
 
         // Ensure the CPU starts at address 0 in ROM memory
-        cpu.pc = 0x0000
-        cpu.mFlag = 1
         cpu.isRunning = true
     }
 
@@ -43,12 +41,12 @@ class D5700Emulator : Runnable {
 
         try {
             // High and low bytes are already clean Ints in range 0..255
-            val highByte = memoryBus.read(cpu.pc, cpu.mFlag)
-            val lowByte = memoryBus.read(cpu.pc + 1, cpu.mFlag)
+            val highByte = memoryBus.rom.read(cpu.pc)
+            val lowByte = memoryBus.rom.read(cpu.pc + 1)
             val word = (highByte shl 8) or lowByte
 
             // DEBUG PRINT:
-            println("FETCH: PC=0x${cpu.pc.toString(16).padStart(4, '0')} | M=${cpu.mFlag} | High=0x${highByte.toString(16)} Low=0x${lowByte.toString(16)} | Word=0x${word.toString(16).padStart(4, '0')}")
+            //println("FETCH: PC=0x${cpu.pc.toString(16).padStart(4, '0')} | M=${cpu.mFlag} | High=0x${highByte.toString(16)} Low=0x${lowByte.toString(16)} | Word=0x${word.toString(16).padStart(4, '0')}")
 
             if (word == 0x0000) {
                 println("Instruction 0000 reached. Halting CPU.")
